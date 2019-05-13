@@ -23,8 +23,8 @@ if sys.stdout.encoding != 'UTF-8':
 if sys.stderr.encoding != 'UTF-8':
     print('sys.stderr.encoding != UTF-8')
     sys.stderr = codecs.getwriter('utf-8')(sys.stderr.buffer, 'strict')
-print('yc---sys.stdout.encoding-----' + sys.stdout.encoding)
-print('yc---sys.stdout.encoding-----' + sys.stderr.encoding)
+print('1---sys.stdout.encoding-----' + sys.stdout.encoding)
+print('2---sys.stdout.encoding-----' + sys.stderr.encoding)
 
 # 这里是调用Config配置里面的信息，包括keystore路径，密码等信息
 keystorePath = Config.keystorePath
@@ -32,14 +32,14 @@ keyAlias = Config.keyAlias
 keystorePassword = Config.keystorePassword
 keyPassword = Config.keyPassword
 if os.access(keystorePath, os.F_OK):
-    print('yc---keystorePath---文件已经存在--' + keystorePath)
+    print('3---keystorePath---文件存在--' + keystorePath)
 else:
-    print('yc---keystorePath---文件已经不存在--请确认是否有keystore')
+    print('4---keystorePath---文件不存在--请确认是否有keystore')
     exit(0)
-print('yc---keystorePath-----' + keystorePath)
-print('yc---keyAlias-----' + keyAlias)
-print('yc---keystorePassword-----' + keystorePassword)
-print('yc---keyPassword-----' + keyPassword)
+print('5---keystorePath-----' + keystorePath)
+print('6---keyAlias-----' + keyAlias)
+print('7---keystorePassword-----' + keystorePassword)
+print('8---keyPassword-----' + keyPassword)
 if len(keystorePath) <= 0:
     print("keystorePath地址不能为空")
     exit(0)
@@ -78,46 +78,46 @@ def getBackslash():
 
 # 当前脚本文件所在目录
 parentPath = curFileDir() + getBackslash()
-print('yc---parentPath当前脚本文件所在目录-----' + parentPath)
+print('9---parentPath当前脚本文件所在目录-----' + parentPath)
 
 # 这里是获取lib的路径，主要是获取lib目录下的文件路径，包含签名和瓦力路径
 libPath = parentPath + "lib" + getBackslash()
-print('yc---libPath-----' + libPath)
+print('10---libPath-----' + libPath)
 buildToolsPath = Config.sdkBuildToolPath + getBackslash()
-print('yc---buildToolsPath-----' + buildToolsPath)
+print('11---buildToolsPath-----' + buildToolsPath)
 # 获取lib下签名jar的路径
 checkAndroidV2SignaturePath = libPath + "CheckAndroidV2Signature.jar"
-print('yc---获取lib下签名jar的路径-----' + checkAndroidV2SignaturePath)
+print('12---获取lib下签名jar的路径-----' + checkAndroidV2SignaturePath)
 # 获取lib下瓦力打包jar的路径
 walleChannelPath = libPath + "walle-cli-all.jar"
-print('yc---获取lib下瓦力打包jar的路径-----' + walleChannelPath)
+print('13---获取lib下瓦力打包jar的路径-----' + walleChannelPath)
 
 # 这里是自定义输入路径
 
 channelsOutputFilePath = parentPath + "output"
-print('yc---channelsOutputFilePath-----' + channelsOutputFilePath)
+print('14---channelsOutputFilePath-----' + channelsOutputFilePath)
 # 这里是获取多渠道打包配置信息
 channelFilePath = parentPath + "apk" + getBackslash() + "channel"
-print('yc---channelFilePath-----' + channelFilePath)
+print('15---channelFilePath-----' + channelFilePath)
 # 这里是获取加固后源文件的路径
 protectedSourceApkPath = parentPath + "apk" + getBackslash() + Config.protectedSourceApkName
-print('yc---protectedSourceApkPath-----' + protectedSourceApkPath)
+print('16---protectedSourceApkPath-----' + protectedSourceApkPath)
 if os.access(protectedSourceApkPath, os.F_OK):
-    print('yc---protectedSourceApkPath---apk已经存在--' + protectedSourceApkPath)
+    print('17---protectedSourceApkPath---需要打包apk存在--' + protectedSourceApkPath)
 else:
-    print('yc---protectedSourceApkPath---apk已经不存在--请确认根目录下的apk文件夹中是否有apk')
+    print('18---protectedSourceApkPath---需要打包apk不存在--请确认根目录下的apk文件夹中是否有apk')
     exit(0)
 
 # 检查自定义路径，并作替换
 if len(Config.protectedSourceApkDirPath) > 0:
     protectedSourceApkPath = Config.protectedSourceApkDirPath + getBackslash() + Config.protectedSourceApkName
-    print('yc---protectedSourceApkPath-----' + protectedSourceApkPath)
+    print('19---protectedSourceApkPath-----' + protectedSourceApkPath)
 if len(Config.channelsOutputFilePath) > 0:
     channelsOutputFilePath = Config.channelsOutputFilePath
-    print('yc---channelsOutputFilePath-----' + channelsOutputFilePath)
+    print('20---channelsOutputFilePath-----' + channelsOutputFilePath)
 if len(Config.channelFilePath) > 0:
     channelFilePath = Config.channelFilePath
-    print('yc---channelFilePath-----' + channelFilePath)
+    print('21---channelFilePath-----' + channelFilePath)
 
 
 def copyFile(srcFile, dstFile):
@@ -126,16 +126,16 @@ def copyFile(srcFile, dstFile):
 
 # 定义签名apk路径，如果文件不是_aligned.apk后缀名
 if protectedSourceApkPath.find("_aligned.apk"):
-    print('yc---protectedSourceApkPath-----' + protectedSourceApkPath)
+    print('22---protectedSourceApkPath-----' + protectedSourceApkPath)
     zipalignedApkPath = protectedSourceApkPath
     signedApkPath = zipalignedApkPath[0: -4] + "_signed.apk"
     copyFile(zipalignedApkPath, signedApkPath)
 else:
     zipalignedApkPath = protectedSourceApkPath[0: -4] + "_aligned.apk"
-    print('yc---zipalignedApkPath-----' + zipalignedApkPath)
+    print('23---zipalignedApkPath-----' + zipalignedApkPath)
     copyFile(protectedSourceApkPath, zipalignedApkPath)
     signedApkPath = zipalignedApkPath[0: -4] + "_signed.apk"
-    print('yc---signedApkPath-----' + signedApkPath)
+    print('24---signedApkPath-----' + signedApkPath)
     copyFile(zipalignedApkPath, signedApkPath)
 
 
@@ -193,19 +193,19 @@ cleanChannelsFiles()
 
 # 对齐
 zipalignShell = buildToolsPath + "zipalign -v 4 " + protectedSourceApkPath + " " + zipalignedApkPath
-print('yc---zipalignShell-----' + zipalignShell)
+print('25---zipalignShell-----' + zipalignShell)
 os.system(zipalignShell)
 
 # 签名
 signShell = buildToolsPath + "apksigner sign --ks " + keystorePath + " --ks-key-alias " \
             + keyAlias + " --ks-pass pass:" + keystorePassword + " --key-pass pass:" \
             + keyPassword + " --out " + signedApkPath + " " + zipalignedApkPath
-print('yc---signShell-----' + signShell)
+print('26---signShell-----' + signShell)
 os.system(signShell)
 
 # 检查V2签名是否正确
 checkV2Shell = "java -jar " + checkAndroidV2SignaturePath + " " + signedApkPath
-print('yc---checkV2Shell-----' + signShell)
+print('27---checkV2Shell-----' + signShell)
 os.system(checkV2Shell)
 
 # 写入渠道
@@ -215,14 +215,10 @@ if len(Config.extraChannelFilePath) > 0:
 else:
     writeChannelShell = "java -jar " + walleChannelPath + " batch -f " + channelFilePath + " " \
                         + signedApkPath + " " + channelsOutputFilePath
-print('yc---writeChannelShell-----' + writeChannelShell)
+print('28---writeChannelShell-----' + writeChannelShell)
 os.system(writeChannelShell)
 
 # 清空临时资源
 cleanTempResource()
 
-print("\n**** =============================执行完成=================================== ****\n")
-print("\n↓↓↓↓↓↓↓↓  Please check output in the path   ↓↓↓↓↓↓↓↓\n")
-print("\n" + channelsOutputFilePath + "\n")
-print("\n↓↓↓↓↓↓↓↓  哥们，使用方便的话转发起来吧！杨充就此谢过！ ↓↓↓↓↓↓↓↓\n")
 print("\n**** =============================执行完成=================================== ****\n")
